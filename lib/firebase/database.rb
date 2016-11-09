@@ -30,6 +30,14 @@ module Firebase
       def get
         @database.session.client.get(path)
       end
+
+      def put(data)
+        @database.session.client.put(path, data)
+      end
+
+      def push(data)
+        @database.session.client.push(path, data)
+      end
     end
 
     module ServerValue

@@ -84,11 +84,38 @@ module Firebase
         end
         puts "GET #{path} => #{resp.status}"
         if resp.status == 200
-          puts 'OK'
+          puts "resp.body = #{resp.body.inspect}"
+          JSON.parse(resp.body, quirks_mode: true)
+        end
+      end
+
+      def put(path, data)
+        resp = @conn.put do |req|
+          req.path = path + '.json'
+          req.body = data.to_json
+          req.headers['Authorization'] = "Bearer #{session.token.access_token}"
+          req.headers['Accept'] = 'application/json'
+          req.headers['Content-Type'] = 'application/json'
+        end
+        puts "PUT #{path} => #{resp.status}"
+        if resp.status == 200
           return JSON.parse(resp.body)
         end
       end
 
+      def push(path, data)
+        resp = @conn.post do |req|
+          req.path = path + '.json'
+          req.body = data.to_json
+          req.headers['Authorization'] = "Bearer #{session.token.access_token}"
+          req.headers['Accept'] = 'application/json'
+          req.headers['Content-Type'] = 'application/json'
+        end
+        puts "POST #{path} => #{resp.status}"
+        if resp.status == 200
+          return JSON.parse(resp.body)
+        end
+      end
     end
 
     # A thin, utility wrapper around the returned Google auth token
