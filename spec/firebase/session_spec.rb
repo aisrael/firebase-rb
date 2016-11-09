@@ -1,17 +1,16 @@
-require 'firebase/session'
+require 'firebase'
+
+TEST_CREDENTIALS = File.expand_path('../../test-credentials.json', __FILE__)
 
 RSpec.describe Firebase::Session do
-  it 'responds ' do
-    order = Order.new
 
-    order.add_entry(LineItem.new(:item => Item.new(
-                                     :price => Money.new(1.11, :USD)
-                                 )))
-    order.add_entry(LineItem.new(:item => Item.new(
-                                     :price => Money.new(2.22, :USD),
-                                     :quantity => 2
-                                 )))
+  it 'responds to #app' do
+    firebase = Firebase.initialize_app database_url: 'https://penapple-18501.firebaseio.com/',
+                                       service_account: TEST_CREDENTIALS
 
-    expect(order.total).to eq(Money.new(5.55, :USD))
+    session = Firebase::Session.new(firebase)
+    expect(session).to respond_to(:app)
+    expect(session.app).to be(firebase)
   end
+
 end

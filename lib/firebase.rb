@@ -26,10 +26,6 @@ module Firebase
       raise(%Q(Service account file "#{@service_account}" cannot be read!)) unless File.readable?(@service_account)
 
       @json = OpenStruct.new(JSON.load(File.open(service_account)))
-
-      @json.each_pair do |key, value|
-        puts %Q(#{key}: #{value.inspect})
-      end
     end
 
     def database

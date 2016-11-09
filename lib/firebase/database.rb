@@ -31,6 +31,11 @@ module Firebase
         @database.session.client.get(path)
       end
     end
+
+    module ServerValue
+      # See https://stackoverflow.com/questions/37864974/how-to-use-the-firebase-server-timestamp-to-generate-date-created
+      TIMESTAMP = {'.sv': 'timestamp'}
+    end
   end
 
 end
